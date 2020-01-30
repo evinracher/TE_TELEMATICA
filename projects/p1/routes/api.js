@@ -7,7 +7,17 @@ const Registry = require('../models/registry');
 
 // get a list of registries from the database
 router.get('/registries', function (req, res, next) {
-    res.send({ type: 'GET' });
+    /*Registry.find({}).then(function(registries){
+        res.send(registries);
+    });//*/
+    Registry.aggregate().near({
+        near: { type: "Point", coordinates: [parseFloat(req.query.lng), parseFloat(req.query.lat)] },
+        maxDistance: 300000, spherical: true, distanceField: "distance"
+    }
+    ).then(function (registries) {
+        console.log(registries);
+        res.send(registries);
+    });
 });
 
 // add a new registry to the db

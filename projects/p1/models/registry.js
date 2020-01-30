@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// create a geolocation schema
+// create a geolocation schema. [longitude, latitude]
 const GeoSchema = new Schema({
     type: {
         type: String,

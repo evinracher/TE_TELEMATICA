@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tele web</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <h1 class="title">Weather stations - A REST API</h1>
+    <div id="homepage">
+        <h1>Look the weather in your area</h1>
+        <div id="registries">
+            
+        </div>
+    </div>
+
+    <!-- babel and react-->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+
+    <!-- Creat React Component -->
+    <script type="text/babel">
+        var Registries = React.createClass({
+            getInitialState: function () {
+                return ({
+                    registries: []
+                });
+            },
+            render: function () {
+                var registries = this.state.registries;
+                registries = registries.map(function (registry, index) {
+                    return (
+                        // Add available stations
+                        <li key={index}>
+                            <span className="temp">{registry.obj.temp}</span>
+                            <span className="humid">{registry.obj.humid}</span>
+                            <span className="dist">{Math.floor(registry.obj.dist / 1000)} km</span>
+                        </li>
+                    );
+                });
+                return (
+                    <div id="registry-container">
+                        <form id="search" onSumbit={this.handdleSubmit}>
+                            <label>Enter you latitude</label>
+                            <input type="text" ref="lat" placeholder="latitude" required />
+                            <label>Enter you langitude</label>
+                            <input type="text" ref="lng" placeholder="longitude" required />
+
+                            <input type="submit" value="Find registries" />
+                            <ul>{registries}</ul>
+                        </form>
+                    </div>
+                );
+            },
+            handdleSubmit: function (e) {
+                e.preventDefault();
+                var lng = this.refs.lng.value;
+                var lat = this.refs.lat.value;
+
+                fetch('/api/registries/?lng=' + lng + '&lat=' + lat).then(function (data) {
+                    return data.json();
+                }).then(json => {
+                    this.setState({
+                        registries: json
+                    })
+                });
+            }
+        });
+
+        ReactDOM.render(<Registry />, document.getElementById('registries'));
+    </script>
+</body>
+
+</html>

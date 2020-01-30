@@ -10,6 +10,9 @@ const app = express();
 mongoose.connect('mongodb://localhost/tele_data');
 mongoose.Promise = global.Promise;
 
+// express static middleware (front-end)
+app.use(express.static('public'));
+
 // parser middleware
 app.use(bodyParser.json());
 
