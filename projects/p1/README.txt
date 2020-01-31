@@ -1,4 +1,13 @@
-express is a package that let us development the app easier.
+## Front end ##
+The front end of the project used React and babel. It cominucates with the backend througth a API Rest
+
+## Back end ##
+The Back end handdles the resquest and response of the API Rest.
+
+Additionally, I used the following packages and utils:
+
+express 
+It is a package that let us development the app easier.
 
 nodemon
 It is used to avoid restart express app manually. You need to install globally 
