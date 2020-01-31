@@ -1,7 +1,7 @@
 body{
     font-family: Raleway;
     color: #555;
-    background: #ff5252;
+    background: #97fca2;
     margin: 10px 30px;
 }
 #homepage{
@@ -52,21 +52,23 @@ ul{
     padding: 0;
 }
 li{
-    padding: 15px 0;
+    padding: 15px;
     background: #eee;
     list-style-type: none;
     font-size: 18px;
     font-weight: bold;
-    margin: 10px 0;
+    margin: 10px;
     border-radius: 4px;
 }
+
 span{
     display: inline-block;
-    margin: 0 20px;
+    width: 32%;
+    text-align: center;
 }
+
 span.dist{
     color: green;
-    float: right;
 }
 span.true{
     border-radius: 10px;

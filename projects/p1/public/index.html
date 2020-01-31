@@ -2,27 +2,26 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <title>Tele web</title>
+    <meta charset="utf-8">
+    <title>Weather Stations</title>
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-    <link href="/style.css" rel="stylesheet" type="text/css">
+    <link href="/style.css" rel="stylesheet" />
 </head>
 
 <body>
-    <h1 class="title">Weather stations - A REST API</h1>
+
+    <h1 class="title">Weather Stations - a REST API</h1>
     <div id="homepage">
-        <h1>Look the weather in your area</h1>
-        <div id="registries">
-            
-        </div>
+        <h1>Look the weather in your area!</h1>
+        <div id="registries"></div>
     </div>
 
-    <!-- babel and react-->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <!-- React and babel -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react@15.6.2/dist/react.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@15.6.2/dist/react-dom.min.js"></script>
 
-    <!-- Creat React Component -->
+    <!-- Create React Component -->
     <script type="text/babel">
         var Registries = React.createClass({
             getInitialState: function () {
@@ -34,29 +33,32 @@
                 var registries = this.state.registries;
                 registries = registries.map(function (registry, index) {
                     return (
-                        // Add available stations
                         <li key={index}>
-                            <span className="temp">{registry.obj.temp}</span>
-                            <span className="humid">{registry.obj.humid}</span>
-                            <span className="dist">{Math.floor(registry.obj.dist / 1000)} km</span>
+                            <span className="temp">{registry.temp} °C</span>
+                            <span className="humid">{registry.humid} %</span>
+                            <span className="dist">{Math.floor(registry.distance / 1000)} km</span>
                         </li>
                     );
                 });
                 return (
                     <div id="registry-container">
-                        <form id="search" onSumbit={this.handdleSubmit}>
-                            <label>Enter you latitude</label>
+                        <form id="search" onSubmit={this.handleSubmit}>
+                            <label>Enter your Latitude:</label>
                             <input type="text" ref="lat" placeholder="latitude" required />
-                            <label>Enter you langitude</label>
+                            <label>Enter your Longitude:</label>
                             <input type="text" ref="lng" placeholder="longitude" required />
-
-                            <input type="submit" value="Find registries" />
-                            <ul>{registries}</ul>
+                            <input type="submit" value="Find Registries" />
                         </form>
+                        <li>
+                            <span>Tempeture (°C)</span>
+                            <span>Humid (%)</span>
+                            <span>Distance (km)</span>
+                        </li>
+                        <ul>{registries}</ul>
                     </div>
                 );
             },
-            handdleSubmit: function (e) {
+            handleSubmit: function (e) {
                 e.preventDefault();
                 var lng = this.refs.lng.value;
                 var lat = this.refs.lat.value;
@@ -66,12 +68,11 @@
                 }).then(json => {
                     this.setState({
                         registries: json
-                    })
+                    });
                 });
             }
         });
-
-        ReactDOM.render(<Registry />, document.getElementById('registries'));
+        ReactDOM.render(<Registries />, document.getElementById('registries'));
     </script>
 </body>
 
