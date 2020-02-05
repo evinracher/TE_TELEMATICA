@@ -15,7 +15,6 @@ router.get('/registries', function (req, res, next) {
         maxDistance: 300000, spherical: true, distanceField: "distance"
     }
     ).then(function (registries) {
-        console.log(registries);
         res.send(registries);
     });
 });
