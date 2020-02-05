@@ -4,6 +4,11 @@ body{
     background: #97fca2;
     margin: 10px 30px;
 }
+
+#login-container{
+    border-bottom: 1px solid black;
+}
+
 #homepage{
     max-width: 800px;
     margin: 60px auto;
