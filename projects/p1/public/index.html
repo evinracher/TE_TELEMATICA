@@ -13,8 +13,7 @@
     <h1 class="title">Weather Stations - a REST API</h1>
     <div id="homepage">
         <h1>Look the weather in your area!</h1>
-        <div id="logger"></div>
-        <div id="registries"></div>
+        <div id="content"></div>
     </div>
 
     <!-- React and babel -->
@@ -24,20 +23,19 @@
 
     <!-- Create React Component -->
     <script type="text/babel">
+
         var Login = React.createClass({
             getInitialState: function () {
                 return ({
-                    registries: []
+                    user: []
                 });
             },
             render: function () {
-                var registries = this.state.registries;
-                registries = registries.map(function (registry, index) {
+                var user = this.state.user;
+                user = user.map(function (user, index) {
                     return (
                         <li key={index}>
-                            <span className="temp">{registry.temp} °C</span>
-                            <span className="humid">{registry.humid} %</span>
-                            <span className="dist">{Math.floor(registry.distance / 1000)} km</span>
+                            <span className="temp">{user.username} </span>
                         </li>
                     );
                 });
@@ -45,9 +43,9 @@
                     <div id="login-container">
                         <form id="login" onSubmit={this.handleLogin}>
                             <label>Username:</label>
-                            <input type="text" ref="lat" placeholder="latitude" required />
+                            <input type="text" ref="username" required />
                             <label>Password:</label>
-                            <input type="text" ref="lng" placeholder="longitude" required />
+                            <input type="text" ref="password" required />
                             <input id="l-botton" type="submit" value="Login" />
                         </form>
                         <ul>{registries}</ul>
@@ -57,7 +55,7 @@
             handleLogin: function (e) {
                 e.preventDefault();
                 console.log("Clicked login");
-                ReactDOM.render(<Registries />, document.getElementById('registries'));
+                ReactDOM.render(<Registries />, document.getElementById('content'));
             }
         });
 
@@ -115,12 +113,12 @@
             },
             handleLogout: function (e) {
                 e.preventDefault();
-                ReactDOM.render(<Login />, document.getElementById('registries'));
+                ReactDOM.render(<Login />, document.getElementById('content'));
             }
         });
 
 
-        ReactDOM.render(<Login />, document.getElementById('registries'));
+        ReactDOM.render(<Login />, document.getElementById('content'));
 
     </script>
 </body>

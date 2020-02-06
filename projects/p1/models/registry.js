@@ -27,5 +27,4 @@ const RegistrySchema = new Schema({
 });
 
 const Registry = mongoose.model('registry', RegistrySchema);
-
 module.exports = Registry;
