@@ -35,7 +35,7 @@
                 user = user.map(function (user, index) {
                     return (
                         <li key={index}>
-                            <span className="temp">{user.username} </span>
+                            <span className="username">{user.username} </span>
                         </li>
                     );
                 });
@@ -45,17 +45,88 @@
                             <label>Username:</label>
                             <input type="text" ref="username" required />
                             <label>Password:</label>
-                            <input type="text" ref="password" required />
+                            <input type="password" ref="password" required />
                             <input id="l-botton" type="submit" value="Login" />
                         </form>
-                        <ul>{registries}</ul>
+                        <form id="signup" onSubmit={this.handleSignup}>
+                            <h3>Are you new?</h3>
+                            <input id="s-botton" type="submit" value="Sign up" />
+                        </form>
+                        <ul>{user}</ul>
                     </div>
                 );
             },
             handleLogin: function (e) {
                 e.preventDefault();
-                console.log("Clicked login");
-                ReactDOM.render(<Registries />, document.getElementById('content'));
+                var user = this.refs.username.value;
+                var pass = this.refs.password.value;
+                var cont = JSON.stringify({
+                    username: user,
+                    password: pass
+                });
+                // Login
+                fetch('/api/users/login', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: cont
+                }).then((response) => response.text())
+                    .catch(error => console.error("ERROR",error))
+                    .then((result) => {
+                        if(result === "Success"){
+                            ReactDOM.render(<Registries />, document.getElementById('content'));
+                        }else{
+                            alert("User or password was incorrect");
+                        }
+                    });
+            },
+            handleSignup: function (e) {
+                e.preventDefault();
+                console.log("Clicked Signup");
+                ReactDOM.render(<Signup />, document.getElementById('content'));
+            }
+        });
+
+        var Signup = React.createClass({
+            render: function () {
+                return (
+                    <div id="signup-container">
+                        <form id="new-user" onSubmit={this.handleRegister}>
+                            <label>Username:</label>
+                            <input type="text" ref="new_username" required />
+                            <label>Password:</label>
+                            <input type="password" ref="new_password" required />
+                            <input id="s-botton" type="submit" value="Register" />
+                        </form>
+                    </div>
+                );
+            },
+            handleRegister: function (e) {
+                e.preventDefault();
+                var user = this.refs.new_username.value;
+                var pass = this.refs.new_password.value;
+                var cont = JSON.stringify({
+                    username: user,
+                    password: pass
+                });
+                fetch('/api/users', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: cont
+                }).then((response) => response.status)
+                    .catch(error => console.error("ERROR",error))
+                    .then((result) => {
+                        if(result === 201){
+                            ReactDOM.render(<Login />, document.getElementById('content'));
+                        }else{
+                            alert("User or password was incorrect");
+                        }
+                    });
             }
         });
 

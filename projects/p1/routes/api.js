@@ -45,40 +45,53 @@ router.delete('/registries/:id', function (req, res, next) {
 });
 
 // USERS
-const users = [];
 
 // Delete later
 router.get('/users', (req, res) => {
-    res.json(users);
+    User.find({}).then(function (users) {
+        res.send(users);
+    })
 });
 
 router.post('/users', async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const user = { username: req.body.username, password: hashedPassword };
-        users.push(user);
-        User.create(user).then(function (user){
-            res.send(user);
-        });
-        res.status(201).send();
+        // Looking if the user exits
+        const r_user = await User.find({ username: req.body.username }).then(user => user[0]);
+        if (r_user == null) {
+            User.create(user).then(function (user) {
+                res.send(user);
+            });
+            res.status(201).send();
+        }else {
+            res.status(500).send();
+        }
     } catch{
         res.status(500).send();
     }
-    
+
 });
 
 router.post('/users/login', async (req, res) => {
-    const user = users.find(user => user.username = req.body.username);
-    if(user == null){
+    var user = {};
+    try {
+        user = await User.find({ username: req.body.username }).then(user => user[0]);
+    } catch {
+        res.status(400).send('Cannot find user');
+    }
+
+    if (user == null) {
         return res.status(400).send('Cannot find user');
     }
-    try{
-        if(await bcrypt.compare(req.body.password, user.password)){
+
+    try {
+        if (await bcrypt.compare(req.body.password, user.password)) {
             res.send('Success');
-        }else{
+        } else {
             res.send('Not allowed');
         }
-    }catch{
+    } catch{
         res.status(500).send();
     }
 });
