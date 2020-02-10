@@ -53,7 +53,7 @@ babel: Para la compilación del código de javascript en las vistas y archivos h
 Y se utilizó bootstrap como plantilla para las vistas css y html.
 
 ### ¿CUALES SON Y CUAL ES LA ESPECIFICACIÓN DE LOS SERVICIOS API REST DEL BACKEND?
-Se implementaron los servicios POST, GET, DELETE y PUT.
+Se implementaron los servicios POST, GET, DELETE y PUT. Ejemplos de estos servicios en el archivo first_project/requests.rest
 
 **POST** bajo la ruta /api/registries/ y el objeto a crear en la base de datos en el body.
 **GET** bajo la ruta /api/registries/ y devuelve los registros de acuerdo a unos parámetros que se le pasen, que es la longitud y latitud de un punto del cual se quiere saber cuales son los registros cercanos (1000 mts a la redonda) que se tienen en la base de datos.
