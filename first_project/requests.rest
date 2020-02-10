@@ -1,0 +1,87 @@
+
+// --- USERS ---
+
+### listUsers()
+GET http://localhost:4000/api/users
+
+### creatUser(Json user)
+POST http://localhost:4000/api/users
+Content-Type: application/json
+
+{
+    "username": "evin",
+    "password": "123"
+}
+
+### login(Json user)
+POST http://localhost:4000/api/users/login
+Content-Type: application/json
+
+{
+    "username": "evin",
+    "password": "123"
+}
+
+// --- API ---
+
+// Variables
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiZXZpbiIsImlhdCI6MTU4MTI5NjQzNSwiZXhwIjoxNTgxMzAwMDM1fQ.3dqnPtDkdistNXsp0aSWa60BN9AyoiywW2obZHatVP0
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiZXZpbiIsImlhdCI6MTU4MTI5NjQzNX0.07VhglFIr2d1S_FsU1iYDeQU1e6G-ZlOIQ3oynxWuOk
+@registryId = 5e40abfc59a3931b82dbcf6d
+
+### listRegistries(token accesstoken)
+GET http://localhost:4000/api/registriesList
+Authorization: Bearer {{accessToken}}
+
+### createRegistry(token accesstoken, Json registry)
+POST http://localhost:4000/api/registries
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "temp": "11",
+  "humid": "75",
+  "geometry" : {"type": "point", "coordinates": [-80, 25]}
+}
+
+### updateRegistry(Param id, token accesstoken,  Json registry)
+PUT http://localhost:4000/api/registries/{{registryId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+	"humid": "20",
+	"temp": "80"
+}
+
+### deleteRegistry(Param id, token accesstoken)
+DELETE http://localhost:4000/api/registries/{{registryId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+// --- TOKENS ---
+
+### deleteToken(token refreshToken)
+DELETE http://localhost:3000/logout
+Content-Type: application/json
+
+{
+    "token" : "{{refreshToken}}"
+}
+
+### defreshToken(token refreshToken)
+POST http://localhost:3000/token
+Content-Type: application/json
+
+{
+    "token": "{{refreshToken}}"
+}
+
+### login(Json user)
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "username":"evin",
+    "password":"123"
+}
