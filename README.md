@@ -56,8 +56,11 @@ Y se utilizó bootstrap como plantilla para las vistas css y html.
 Se implementaron los servicios POST, GET, DELETE y PUT. Ejemplos de estos servicios en el archivo first_project/requests.rest
 
 **POST** bajo la ruta /api/registries/ y el objeto a crear en la base de datos en el body.
+
 **GET** bajo la ruta /api/registries/ y devuelve los registros de acuerdo a unos parámetros que se le pasen, que es la longitud y latitud de un punto del cual se quiere saber cuales son los registros cercanos (1000 mts a la redonda) que se tienen en la base de datos.
+
 **DELETE** bajo la ruta /api/registries/:id y borra el registro identificado con el parámetro :id
+
 **PUT** bajo la ruta /api/registries/:id y permite actualizar el registro identificado con el parámetro :id, y los parámetros a actualizar en el body.
 
 ### ¿CÓMO REALIZÓ LA AUTENTICACIÓN DE LOS SERVICIOS API REST?
