@@ -1,13 +1,15 @@
+require('dotenv').config();
 const express = require('express');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 const Registry = require('../models/registry');
 const User = require('../models/user');
 
 // router.<get|delete|post|put>
-const bcrypt = require('bcrypt');
 
 
-// get a list of registries from the database
+// [VIEW] get a list of registries from the database.
 router.get('/registries', function (req, res, next) {
     /*Registry.find({}).then(function(registries){
         res.send(registries);
@@ -21,15 +23,24 @@ router.get('/registries', function (req, res, next) {
     });
 });
 
-// add a new registry to the db
-router.post('/registries', function (req, res, next) {
+// --- API ---
+
+// [API] get a list of registries from the database
+router.get('/registriesList', authenticateToken, function (req, res, next) {
+    Registry.find({}).then(function (registries) {
+        res.send(registries);
+    });
+});
+
+// [API] add a new registry to the db
+router.post('/registries', authenticateToken, function (req, res, next) {
     Registry.create(req.body).then(function (registry) {
         res.send(registry);
     }).catch(next);
 });
 
-// update a registry in the db
-router.put('/registries/:id', function (req, res, next) {
+// [API] update a registry in the db
+router.put('/registries/:id', authenticateToken, function (req, res, next) {
     Registry.findByIdAndUpdate({ _id: req.params.id }, req.body).then(function () {
         Registry.findOne({ _id: req.params.id }).then(function (registry) {
             res.send(registry);
@@ -37,14 +48,14 @@ router.put('/registries/:id', function (req, res, next) {
     });
 });
 
-// delete a registry from the db
-router.delete('/registries/:id', function (req, res, next) {
+// [API] delete a registry from the db
+router.delete('/registries/:id', authenticateToken, function (req, res, next) {
     Registry.findByIdAndRemove({ _id: req.params.id }).then(function (registry) {
         res.send(registry);
     });
 });
 
-// USERS
+// --- USERS ---
 
 // Delete later
 router.get('/users', (req, res) => {
@@ -64,7 +75,7 @@ router.post('/users', async (req, res) => {
                 res.send(user);
             });
             res.status(201).send();
-        }else {
+        } else {
             res.status(500).send();
         }
     } catch{
@@ -95,5 +106,22 @@ router.post('/users/login', async (req, res) => {
         res.status(500).send();
     }
 });
+
+// middleware
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization']
+    // undefined or actual token
+    const token = authHeader && authHeader.split(' ')[1];
+    if (token == null) return res.sendStatus(401);
+
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        // User has token, but it is no the correct one
+        console.log("HERE")
+        console.log(err);
+        if (err) return res.sendStatus(403);
+        req.user = user;
+        next()
+    });
+}
 
 module.exports = router;
